@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreData
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
@@ -20,6 +21,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var mapView: MKMapView!
     var locationManager = CLLocationManager()
     
+    
+    var touchedPoint = CGPoint()
+    
+    var touchedCoordinates = CLLocationCoordinate2D()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,12 +41,33 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.addGestureRecognizer(gestureRecognizer)
     }
     
+    
+    @IBAction func saveButtonClicked(_ sender: Any) {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let newPlaces = NSEntityDescription.insertNewObject(forEntityName: "Places", into: context)
+        
+        newPlaces.setValue(nameText.text, forKey: "title")
+        newPlaces.setValue(commentText.text, forKey: "subtitle")
+        newPlaces.setValue(touchedCoordinates.latitude, forKey: "latitude")
+        newPlaces.setValue(touchedCoordinates.longitude, forKey: "longitude")
+        newPlaces.setValue(UUID(), forKey: "id")
+
+        do {
+            try context.save()
+        } catch {
+            print("error")
+        }
+    }
+    
     @objc func chooseLocation(gestureRecognizer: UILongPressGestureRecognizer) {
         
         if gestureRecognizer.state == .began {
             
-            let touchedPoint = gestureRecognizer.location(in: self.mapView)
-            let touchedCoordinates = self.mapView.convert(touchedPoint, toCoordinateFrom: self.mapView)
+            touchedPoint = gestureRecognizer.location(in: self.mapView)
+            touchedCoordinates = self.mapView.convert(touchedPoint, toCoordinateFrom: self.mapView)
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = touchedCoordinates
