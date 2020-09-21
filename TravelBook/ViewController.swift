@@ -14,17 +14,15 @@ import CoreData
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var nameText: UITextField!
-    
     @IBOutlet weak var commentText: UITextField!
-    
-    
     @IBOutlet weak var mapView: MKMapView!
+    
     var locationManager = CLLocationManager()
-    
-    
     var touchedPoint = CGPoint()
-    
     var touchedCoordinates = CLLocationCoordinate2D()
+    
+    var selectedTitle = ""
+    var selectedId: UUID?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,8 +37,46 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         gestureRecognizer.minimumPressDuration = 3
         mapView.addGestureRecognizer(gestureRecognizer)
+        
+        if selectedTitle != "" {
+            
+            let stringUUID = selectedId!.uuidString
+            print(stringUUID)
+        } else {
+            print("what??")
+            
+        }
     }
     
+    func getData() {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Places")
+        
+        do {
+//            let results = try context.fetch(request) as! [NSManagedObject]
+//
+//            for result in results as! [NSManagedObject] {
+//
+//                if selectedTitle == result.value(forKey: "title") as? String {
+//
+//
+//                }
+//
+//
+//                if selectedId == result.value(forKey: "id") as? UUID {
+//
+//                    commentText.text =
+//                }
+//            }
+            
+            
+        } catch {
+            print("error")
+        }
+    }
     
     @IBAction func saveButtonClicked(_ sender: Any) {
         
@@ -86,5 +122,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let region = MKCoordinateRegion(center: location, span: span)
         mapView.setRegion(region, animated: true)
     }
+
 }
 

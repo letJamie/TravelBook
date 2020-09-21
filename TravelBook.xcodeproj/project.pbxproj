@@ -62,8 +62,8 @@
 			children = (
 				7D36AB1525184B9D008CD4A1 /* AppDelegate.swift */,
 				7D36AB1725184B9D008CD4A1 /* SceneDelegate.swift */,
-				7D36AB1925184B9D008CD4A1 /* ViewController.swift */,
 				7D36AB2C2518CAA4008CD4A1 /* ListViewController.swift */,
+				7D36AB1925184B9D008CD4A1 /* ViewController.swift */,
 				7D36AB1B25184B9D008CD4A1 /* Main.storyboard */,
 				7D36AB2125184B9F008CD4A1 /* Assets.xcassets */,
 				7D36AB2325184B9F008CD4A1 /* LaunchScreen.storyboard */,
