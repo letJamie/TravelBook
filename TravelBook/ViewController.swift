@@ -96,6 +96,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         nameText.text = annotationTitle
                         commentText.text = annotationSubTitle
                         
+                        locationManager.stopUpdatingLocation()
+                        
+                        let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                        let region = MKCoordinateRegion(center: coordinate, span: span)
+                        mapView.setRegion(region, animated: true)
                     }
                     
                 }
@@ -123,6 +128,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         } catch {
             print("error")
         }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("newPlace"), object: nil)
+        navigationController?.popViewController(animated: true)
+        
     }
     
     @objc func chooseLocation(gestureRecognizer: UILongPressGestureRecognizer) {
